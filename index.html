@@ -345,11 +345,49 @@
   <script>
     const sections = document.querySelectorAll("section, footer");
     const navbar = document.getElementById("navbar");
+    const videos = document.querySelectorAll("video");
+  
+    // Function to play video
+    function playVideo(video) {
+      if (video.paused) {
+        video.play().catch(err => {
+          console.log("Autoplay prevented, waiting for user interaction");
+        });
+      }
+    }
+
+    // Attempt to play all videos on page load (for desktop)
+    window.addEventListener('load', () => {
+      videos.forEach(video => {
+        playVideo(video);
+      });
+    });
+
+    // Enable video playback on first user interaction (for mobile)
+    let userInteracted = false;
+    function enableAutoplay() {
+      if (!userInteracted) {
+        userInteracted = true;
+        videos.forEach(video => {
+          playVideo(video);
+        });
+      }
+    }
+
+    document.addEventListener('click', enableAutoplay, { once: true });
+    document.addEventListener('touchstart', enableAutoplay, { once: true });
+    document.addEventListener('scroll', enableAutoplay, { once: true });
   
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add("visible");
+          
+          // Play video when section comes into view
+          const video = entry.target.querySelector("video");
+          if (video) {
+            playVideo(video);
+          }
         }
       });
     }, {
