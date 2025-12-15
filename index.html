@@ -289,7 +289,7 @@
 
   <!-- HERO SECTION -->
   <section class="hero-banner">
-    <video autoplay muted loop playsinline class="background-video">
+    <video muted loop playsinline class="background-video">
       <source src="city.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
@@ -305,7 +305,7 @@
   </section>
 
   <section id="message">
-    <video autoplay muted loop playsinline class="background-video">
+    <video muted loop playsinline class="background-video">
       <source src="coffeeshop.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
@@ -318,7 +318,7 @@
   </section>
 
   <section id="message">
-    <video autoplay muted loop playsinline class="background-video">
+    <video muted loop playsinline class="background-video">
       <source src="woman.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
@@ -347,6 +347,11 @@
     const navbar = document.getElementById("navbar");
     const videos = document.querySelectorAll("video");
   
+    // Add autoplay attribute programmatically to avoid HTML validation errors
+    videos.forEach(video => {
+      video.setAttribute('autoplay', '');
+    });
+
     // Function to play video
     function playVideo(video) {
       if (video.paused) {
