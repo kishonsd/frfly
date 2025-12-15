@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firefly - Connect Authentically</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #E85A2C;
+            --text-dark: #000000;
+            --text-light: #FFFFFF;
+            --bg-light: #000000;
+            --overlay: rgba(0, 0, 0, 0.35);
+            --gradient: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.3) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text-dark);
+            overflow-x: hidden;
+            background: var(--bg-light);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-light);
+            letter-spacing: 0.5px;
+        }
+
+        /* Add your logo image here when ready */
+        .logo-image {
+            height: 50px;
+            width: auto;
+        }
+
+        /* Video Section */
+        .video-section {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            min-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000000;
+        }
+
+        .video-section video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--overlay);
+            background-image: var(--gradient);
+            z-index: 1;
+        }
+
+        .video-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: var(--text-light);
+            padding: 2rem;
+            max-width: 1200px;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .video-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .video-content p {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            font-weight: 300;
+            line-height: 1.6;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+
+        .hero-logo {
+            max-width: 300px;
+            width: 80%;
+            height: auto;
+            animation: float 3s ease-in-out infinite;
+            margin-bottom: 2rem;
+        }
+
+        /* Text Section */
+        .text-section {
+            width: 100%;
+            height: 100vh;
+            min-height: 100vh;
+            padding: clamp(4rem, 10vh, 8rem) 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: #000000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .text-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .text-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 2rem;
+            color: var(--text-light);
+            letter-spacing: -0.5px;
+        }
+
+        .text-section p {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            line-height: 1.8;
+            max-width: 800px;
+            color: var(--text-light);
+            opacity: 0.85;
+            font-weight: 300;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            width: 100%;
+            height: 100vh;
+            min-height: 100vh;
+            padding: clamp(5rem, 12vh, 10rem) 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: #000000;
+            color: var(--text-light);
+        }
+
+        .cta-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 600;
+            margin-bottom: 2.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.2rem 3.5rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #FFFFFF;
+            background: var(--primary);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-family: 'DM Sans', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+            background: var(--primary-dark);
+        }
+
+        /* Footer */
+        footer {
+            width: 100%;
+            padding: 2rem;
+            text-align: center;
+            background: #000000;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Scroll animations */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem;
+            }
+
+            .logo-image {
+                height: 40px;
+            }
+
+            .video-section {
+                height: 100vh;
+                min-height: 100vh;
+            }
+
+            .text-section {
+                height: 100vh;
+                min-height: 100vh;
+                padding: 3rem 1.5rem;
+            }
+
+            .cta-section {
+                height: 100vh;
+                min-height: 100vh;
+                padding: 3.5rem 1.5rem;
+            }
+
+            .cta-button {
+                padding: 1rem 2.5rem;
+                font-size: 1rem;
+            }
+
+            .hero-logo {
+                max-width: 250px;
+            }
+        }
+
+        /* Placeholder for video - you'll replace this with your actual videos */
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <img src="fireflylogo.png" alt="Firefly Logo" class="logo-image">
+    </nav>
+
+    <!-- Hero Video Section -->
+    <section class="video-section">
+        <!-- Replace with your actual video -->
+        <!-- <video autoplay muted loop playsinline>
+            <source src="your-video.mp4" type="video/mp4">
+        </video> -->
+        <div class="video-placeholder">Your Hero Video Here</div>
+        <div class="video-overlay"></div>
+        <div class="video-content">
+            <img src="fireflylogo.png" alt="Firefly Logo" class="hero-logo">
+            <p>Where genuine moments meet meaningful connections</p>
+        </div>
+    </section>
+
+    <!-- Text Section 1 -->
+    <section class="text-section">
+        <h2>Share Your World</h2>
+        <p>Firefly is reimagining social media with authentic storytelling, real-time engagement, and a community designed for genuine human connection.</p>
+    </section>
+
+    <!-- Video Section 2 -->
+    <section class="video-section">
+        <!-- Replace with your actual video -->
+        <!-- <video autoplay muted loop playsinline>
+            <source src="your-video-2.mp4" type="video/mp4">
+        </video> -->
+        <div class="video-placeholder">Your Second Video Here</div>
+        <div class="video-overlay"></div>
+        <div class="video-content">
+            <h1>One app. Every moment. Total presence.</h1>
+        </div>
+    </section>
+
+    <!-- Text Section 2 -->
+    <section class="text-section">
+        <h2>Express With Confidence</h2>
+    </section>
+
+    <!-- Video Section 3 -->
+    <section class="video-section">
+        <!-- Replace with your actual video -->
+        <!-- <video autoplay muted loop playsinline>
+            <source src="your-video-3.mp4" type="video/mp4">
+        </video> -->
+        <div class="video-placeholder">Your Third Video Here</div>
+        <div class="video-overlay"></div>
+        <div class="video-content">
+            <h1>Your community is always growing. Firefly helps you stay connected.</h1>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Ready to join?</h2>
+        <a href="#" class="cta-button">Get Started</a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 Firefly. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all text sections
+        document.querySelectorAll('.text-section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add parallax effect to video sections
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            document.querySelectorAll('.video-section').forEach((section, index) => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    const video = section.querySelector('video');
+                    if (video) {
+                        video.style.transform = `translate(-50%, calc(-50% + ${scrolled * 0.5}px))`;
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
